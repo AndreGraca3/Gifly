@@ -4,7 +4,7 @@
 
 <img src="https://cdn-icons-png.flaticon.com/512/5362/5362497.png" alt="Gifly Banner" width="200" height="200">
 
-Gifly is a powerful and useful desktop toolbox application that makes it super easy to search for and share GIFs from Tenor. 🚀 With its intuitive interface and blazing-fast search capabilities, you’ll never struggle to find the perfect GIF again!
+Gifly is a powerful and useful desktop application that makes it super easy to search for and share GIFs from Tenor. 🚀 With its intuitive interface and blazing-fast search capabilities, you’ll never struggle to find the perfect GIF again!
 
 ## ✨ Features
 
