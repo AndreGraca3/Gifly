@@ -14,7 +14,7 @@ Gifly is a powerful and useful desktop application that makes it super easy to s
 
 ## 📥 Installation
 
-1. **Download** the latest release: [Gifly v1.0.0](https://github.com/AndreGraca3/Gifly/releases) 📦
+1. **Download** the latest release: [Gifly](https://github.com/AndreGraca3/Gifly/releases) 📦
 2. **Unzip** the downloaded file. 📂
 3. **Run** `Gifly.exe` to start the app! 🚀
 4. **Open** it by clicking on the system tray icon. ⬇️
