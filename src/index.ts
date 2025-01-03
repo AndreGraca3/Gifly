@@ -94,6 +94,13 @@ const createWindow = (): void => {
   const tray = new Tray(path.join(assetsPath, "icon.png"));
   const contextMenu = Menu.buildFromTemplate([
     { label: "Show App", click: () => mainWindow.show() },
+    {
+      label: "Restart",
+      click: () => {
+        app.relaunch();
+        app.exit();
+      },
+    },
     { label: "Quit", click: () => app.quit() },
   ]);
 

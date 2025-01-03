@@ -6,6 +6,7 @@ import useScrollToTop from "../hooks/useScrollToTop";
 import GifApi from "../api/GifApi";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useFavourites from "../hooks/useFavourites";
+import { PulseLoader } from "react-spinners";
 
 export default function GifSection({
   query,
@@ -58,9 +59,13 @@ export default function GifSection({
         ))}
 
       <InfiniteScroll
-        loader={<h4>Loading more...</h4>}
+        loader={
+          <PulseLoader className="flex w-full text-center py-2" color="white" />
+        }
         hasMore={hasMoreGifs}
-        next={() => fetchAndSetGifs()}
+        next={() => {
+          if (query.length > 0) fetchAndSetGifs();
+        }}
         dataLength={gifs.length}
         scrollThreshold={0.9}
       >

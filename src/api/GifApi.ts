@@ -6,6 +6,8 @@ export default interface GifApi {
     limit?: number,
     position?: number | string
   ) => Promise<GifSearchResult>;
+
+  urlToTitle: (url: string) => string;
 }
 
 export type GifSearchResult = {

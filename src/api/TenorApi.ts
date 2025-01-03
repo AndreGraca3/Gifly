@@ -1,8 +1,13 @@
 import GifApi, { GifSearchResult } from "./GifApi";
 
 enum MediaFilter {
+  DEFAULT = "default",
   MINIMAL = "minimal",
   BASIC = "basic",
+}
+
+enum DefaultFormats {
+  MEDIUMGIF = "mediumgif",
 }
 
 enum BasicFormats {
@@ -40,8 +45,8 @@ export default class TenorApi implements GifApi {
   private API_KEY: string;
 
   // formats to use
-  private mediaFilter = MediaFilter.MINIMAL;
-  private formatToReturn: MinimalFormats | BasicFormats = MinimalFormats.GIF;
+  private mediaFilter = MediaFilter.DEFAULT;
+  private formatToReturn: MinimalFormats | BasicFormats | DefaultFormats = DefaultFormats.MEDIUMGIF;
 
   async search(query: string, limit = 10, position?: string | number): Promise<GifSearchResult> {
     if (!query) {
@@ -65,13 +70,13 @@ export default class TenorApi implements GifApi {
     return { results: gifs, nextPosition: data.next != 0 ? data.next : null };
   }
 
-  private urlToTitle(url: string): string {
+  urlToTitle(url: string): string {
     const rawTitle = url.split("/").pop();
 
     if (!rawTitle) {
       return "";
     }
 
-    return rawTitle.replace(/-/g, " ").slice(0, -4);
+    return rawTitle.split(".")[0];
   }
 }
