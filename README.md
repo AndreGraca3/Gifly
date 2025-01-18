@@ -19,7 +19,7 @@ Gifly is a powerful and useful desktop application that makes it super easy to s
 3. **Run** `Gifly.exe` to start the app! 🚀
 4. **Open** it by clicking on the system tray icon. ⬇️
 5. **Create** a desktop shortcut for easy access. 🖥️
-6. **Add** it to your Windows startup programs so it launches automatically every boot. Do so by creating a shortcut to `Gifly.exe` in the `shell:startup` folder. 🪟
+6. *Optional* If you are on Windows, **add** it to your startup programs so it launches automatically on every boot. Do so by creating a shortcut to `Gifly.exe` in the `shell:startup` folder. 🪟
 
 ## 🛠️ Tech Stack
 
@@ -30,7 +30,7 @@ Gifly is a powerful and useful desktop application that makes it super easy to s
 
 To use the app, follow these steps:
 
-1. **Run** `Gifly.exe` to start the app.
+1. **Run** `Gifly` to start the app.
 2. **Open** the app by clicking on the system tray icon.
 3. **Search** for GIFs by entering a keyword in the search bar.
 4. **Click** on a GIF to copy it to your clipboard, on the share button to copy the link, or on the heart to add it to your favorites.
@@ -42,7 +42,7 @@ If you want to uninstall Gifly, you can do so by following these steps:
 1. **Close** the app by right clicking on the system tray icon and selecting `Quit`.
 2. **Delete** the folder where you unzipped the app.
 3. **Delete** the desktop shortcut (if you created one).
-4. **Delete** local data
+4. **Delete** local data on Windows
    - `C:\Users\<username>\AppData\Roaming\gifly`
 
 ## 👨‍💻 Development

@@ -9,8 +9,6 @@ import { useDebounce } from "use-debounce";
 import { createRoot } from "react-dom/client";
 import TenorApi from "./api/TenorApi";
 
-console.log("env from window: " + (window as any).env.TENOR_API_KEY);
-
 const tenorApi = new TenorApi((window as any).env.TENOR_API_KEY);
 
 export default function App() {
@@ -18,10 +16,10 @@ export default function App() {
   const [queryValue] = useDebounce(query, 1000);
 
   return (
-    <div>
+    <>
       <Header onSearch={setQuery} />
 
-      <section className="mt-20 overflow-visible">
+      <section className="mt-20 p-4 overflow-visible">
         <GifSection query={queryValue} gifApi={tenorApi} />
       </section>
 
@@ -36,7 +34,7 @@ export default function App() {
       />
 
       <Tooltip id="my-tooltip" className="z-50" />
-    </div>
+    </>
   );
 }
 
