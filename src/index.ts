@@ -75,6 +75,16 @@ const createWindow = (): void => {
     },
   });
 
+  screen.on("display-metrics-changed", (event, display, changedMetrics) => {
+    const { x, y, width, height } = display.workArea;
+    mainWindow.setBounds({
+      x: width - windowWidth,
+      y: height - windowHeight,
+      width: windowWidth,
+      height: windowHeight,
+    });
+  });
+
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
