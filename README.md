@@ -1,14 +1,14 @@
 # 🎉 Gifly - Your Go-To Desktop GIF Searcher! 🌟
 
-> A fast and sleek desktop app for finding the best GIFs on Tenor, powered by TypeScript, React, and Electron!
+> A fast and sleek desktop app for finding the best GIFs on Klipy, powered by TypeScript, React, and Electron!
 
 <img src="https://cdn-icons-png.flaticon.com/512/5362/5362497.png" alt="Gifly Banner" width="200" height="200">
 
-Gifly is a powerful and useful desktop application that makes it super easy to search for and share GIFs from Tenor. 🚀 With its intuitive interface and blazing-fast search capabilities, you’ll never struggle to find the perfect GIF again!
+Gifly is a powerful and useful desktop application that makes it super easy to search for and share GIFs from Klipy. 🚀 With its intuitive interface and blazing-fast search capabilities, you’ll never struggle to find the perfect GIF again!
 
 ## ✨ Features
 
-- 🔍 **Powerful Search** - Instantly find the perfect GIF on Tenor.
+- 🔍 **Powerful Search** - Instantly find the perfect GIF on Klipy.
 - ⭐ **Favorites** - Save your favorite GIFs for quick access.
 - 📋 **Copy to Clipboard** - Quickly copy GIFs to your clipboard for easy sharing.
 
@@ -24,7 +24,7 @@ Gifly is a powerful and useful desktop application that makes it super easy to s
 ## 🛠️ Tech Stack
 
 - **Frontend**: React + TypeScript + Electron + Tailwind CSS
-- **API**: Tenor GIF API (but you can implement another)
+- **API**: Klipy GIF API (but you can implement another)
 
 ## 🌐 Usage
 
