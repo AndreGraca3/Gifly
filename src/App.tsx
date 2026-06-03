@@ -13,7 +13,7 @@ const gifApi = new KlipyApi((window as any).env.KLIPY_API_KEY);
 
 export default function App() {
   const [query, setQuery] = useState("");
-  const [queryValue] = useDebounce(query, 1000);
+  const [queryValue] = useDebounce(query, 900);
 
   return (
     <>
