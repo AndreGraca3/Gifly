@@ -6,14 +6,15 @@ type UseGifs = [gifs: Gif[], fetchAndSetGifs: () => void, hasMoreGifs: boolean];
 
 type State = {
   gifs: Set<Gif>;
-  position: string | number | null;
+  page: number;
+  hasMoreGifs: boolean;
 };
 
 type Action =
   | { type: "RESET" }
   | {
       type: "FETCH_SUCCESS";
-      payload: { gifs: Gif[]; nextPosition: string | number | null };
+      payload: { gifs: Gif[]; page: number; hasMore: boolean };
     }
   | { type: "FETCH_ERROR" };
 
@@ -21,12 +22,13 @@ export default function useGifs(gifApi: GifApi, query: string): UseGifs {
   // Define the initial state for the reducer
   const initialState: State = {
     gifs: new Set<Gif>(),
-    position: null,
+    page: 1,
+    hasMoreGifs: false,
   };
 
   // Reducer function to handle state transitions
   const reducer = (state: State, action: Action) => {
-    if(query.length === 0) return { ...initialState };
+    if (query.length === 0) return { ...initialState };
 
     switch (action.type) {
       case "RESET":
@@ -34,13 +36,14 @@ export default function useGifs(gifApi: GifApi, query: string): UseGifs {
       case "FETCH_SUCCESS":
         return {
           gifs:
-            state.position == null
-              ? action.payload.gifs
-              : [...state.gifs, ...action.payload.gifs],
-          position: action.payload.nextPosition,
+            action.payload.page == 1
+              ? new Set(action.payload.gifs)
+              : new Set([...state.gifs, ...action.payload.gifs]),
+          page: state.page + 1,
+          hasMoreGifs: action.payload.hasMore,
         };
       case "FETCH_ERROR":
-        return { ...state, gifs: new Set<Gif>(), position: null };
+        return { gifs: new Set<Gif>(), page: 1, hasMoreGifs: false };
       default:
         return state;
     }
@@ -48,10 +51,12 @@ export default function useGifs(gifApi: GifApi, query: string): UseGifs {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Fetch function using the current `query` and `position`
+  // Fetch function using the current `query` and `page`
   const fetchAndSetGifs = useCallback(async () => {
     if (query.length == 0) {
-      dispatch({ type: "RESET" });
+      if (state.gifs.size > 0) {
+        dispatch({ type: "RESET" });
+      }
       return;
     }
 
@@ -65,19 +70,21 @@ export default function useGifs(gifApi: GifApi, query: string): UseGifs {
           type: "FETCH_SUCCESS",
           payload: {
             gifs: [{ name: gifApi.urlToTitle(query), url: query, tags: [] }],
-            nextPosition: null,
+            page: 1,
+            hasMore: false,
           },
         });
         return;
       }
 
-      const gifsResponse = await gifApi.search(query, 20, state.position);
+      const gifsResponse = await gifApi.search(query, state.page, 20);
 
       dispatch({
         type: "FETCH_SUCCESS",
         payload: {
           gifs: gifsResponse.results,
-          nextPosition: gifsResponse.nextPosition,
+          page: state.page,
+          hasMore: gifsResponse.hasMore,
         },
       });
     } catch (error) {
@@ -87,9 +94,9 @@ export default function useGifs(gifApi: GifApi, query: string): UseGifs {
   }, [state, query]);
 
   useEffect(() => {
-    state.position = null;
+    state.page = 1;
     fetchAndSetGifs();
   }, [query]);
 
-  return [Array.from(state.gifs), fetchAndSetGifs, state.position != null];
+  return [Array.from(state.gifs), fetchAndSetGifs, state.hasMoreGifs];
 }

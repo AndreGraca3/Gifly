@@ -1,3 +1,4 @@
+/*
 import GifApi, { GifSearchResult } from "./GifApi";
 
 enum MediaFilter {
@@ -67,7 +68,7 @@ export default class TenorApi implements GifApi {
       tags: gifItem.tags.map((tag: string) => tag.toLowerCase()),
     }));
 
-    return { results: gifs, nextPosition: data.next != 0 ? data.next : null };
+    return { results: gifs, nextPosition: data.next != 0 ? data.next : null, hasMore: data.next != 0 };
   }
 
   urlToTitle(url: string): string {
@@ -80,3 +81,4 @@ export default class TenorApi implements GifApi {
     return rawTitle.split(".")[0];
   }
 }
+*/

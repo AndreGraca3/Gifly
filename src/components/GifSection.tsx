@@ -63,9 +63,7 @@ export default function GifSection({
           <PulseLoader className="flex w-full text-center py-2" color="white" />
         }
         hasMore={hasMoreGifs}
-        next={() => {
-          if (query.length > 0) fetchAndSetGifs();
-        }}
+        next={fetchAndSetGifs}
         dataLength={gifs.length}
         scrollThreshold={0.9}
       >

@@ -7,9 +7,9 @@ import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { useDebounce } from "use-debounce";
 import { createRoot } from "react-dom/client";
-import TenorApi from "./api/TenorApi";
+import KlipyApi from "./api/KlipyApi";
 
-const tenorApi = new TenorApi((window as any).env.TENOR_API_KEY);
+const gifApi = new KlipyApi((window as any).env.KLIPY_API_KEY);
 
 export default function App() {
   const [query, setQuery] = useState("");
@@ -20,7 +20,7 @@ export default function App() {
       <Header onSearch={setQuery} />
 
       <section className="mt-20 p-4 overflow-visible">
-        <GifSection query={queryValue} gifApi={tenorApi} />
+        <GifSection query={queryValue} gifApi={gifApi} />
       </section>
 
       <ToastContainer

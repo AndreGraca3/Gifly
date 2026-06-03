@@ -3,8 +3,8 @@ import { Gif } from "../domain/Gif";
 export default interface GifApi {
   search: (
     query: string,
-    limit?: number,
-    position?: number | string
+    page: number,
+    limit?: number
   ) => Promise<GifSearchResult>;
 
   urlToTitle: (url: string) => string;
@@ -12,5 +12,5 @@ export default interface GifApi {
 
 export type GifSearchResult = {
   results: Gif[];
-  nextPosition: number | string;
+  hasMore: boolean;
 };
