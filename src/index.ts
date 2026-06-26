@@ -1,10 +1,11 @@
-import axios from "axios";
+import { safeFetch } from "./utils/safeFetch";
 import path from "path";
 import {
   app,
   BrowserWindow,
   ipcMain,
   Menu,
+  net,
   screen,
   session,
   Tray,
@@ -24,9 +25,7 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 ipcMain.handle("safe-fetch", async (e, url) => {
-  // console.log(`Fetching ${url}`);
-  const response = await axios.get(url);
-  return response.data;
+  return safeFetch(url, net.fetch.bind(net));
 });
 
 ipcMain.handle("copy-image-to-clipboard", async () => {

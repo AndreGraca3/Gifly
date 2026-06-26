@@ -6,10 +6,14 @@ export default function GifList({
   gifs,
   isFavorited,
   toggleFavorite,
+  onAssignCategories,
+  getGifCategoryColors,
 }: {
   gifs: Gif[];
   isFavorited: (gif: Gif) => boolean;
   toggleFavorite: (gif: Gif) => void;
+  onAssignCategories?: (gif: Gif) => void;
+  getGifCategoryColors?: (gifUrl: string) => string[];
 }) {
   return (
     <Masonry
@@ -24,6 +28,8 @@ export default function GifList({
             gif={gif}
             isFavorited={isFavorited(gif)}
             toggleFavorite={() => toggleFavorite(gif)}
+            onAssignCategories={onAssignCategories ? () => onAssignCategories(gif) : undefined}
+            gifCategoryColors={getGifCategoryColors?.(gif.url)}
           />
         );
       })}

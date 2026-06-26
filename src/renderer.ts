@@ -26,6 +26,7 @@
  * ```
  */
 
+import '@fontsource-variable/nunito';
 import './index.css';
 import './App';
 

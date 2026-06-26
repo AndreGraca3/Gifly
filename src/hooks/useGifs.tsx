@@ -2,12 +2,18 @@ import { useCallback, useEffect, useReducer } from "react";
 import { Gif } from "../domain/Gif";
 import GifApi from "../api/GifApi";
 
-type UseGifs = [gifs: Gif[], fetchAndSetGifs: () => void, hasMoreGifs: boolean];
+type UseGifs = [
+  gifs: Gif[],
+  fetchAndSetGifs: () => void,
+  hasMoreGifs: boolean,
+  isError: boolean,
+];
 
 type State = {
   gifs: Set<Gif>;
   page: number;
   hasMoreGifs: boolean;
+  isError: boolean;
 };
 
 type Action =
@@ -19,31 +25,29 @@ type Action =
   | { type: "FETCH_ERROR" };
 
 export default function useGifs(gifApi: GifApi, query: string): UseGifs {
-  // Define the initial state for the reducer
   const initialState: State = {
     gifs: new Set<Gif>(),
     page: 1,
     hasMoreGifs: false,
+    isError: false,
   };
 
-  // Reducer function to handle state transitions
-  const reducer = (state: State, action: Action) => {
-    if (query.length === 0) return { ...initialState };
-
+  const reducer = (state: State, action: Action): State => {
     switch (action.type) {
       case "RESET":
         return { ...initialState };
       case "FETCH_SUCCESS":
         return {
           gifs:
-            action.payload.page == 1
+            action.payload.page === 1
               ? new Set(action.payload.gifs)
               : new Set([...state.gifs, ...action.payload.gifs]),
           page: state.page + 1,
           hasMoreGifs: action.payload.hasMore,
+          isError: false,
         };
       case "FETCH_ERROR":
-        return { gifs: new Set<Gif>(), page: 1, hasMoreGifs: false };
+        return { gifs: new Set<Gif>(), page: 1, hasMoreGifs: false, isError: true };
       default:
         return state;
     }
@@ -51,32 +55,11 @@ export default function useGifs(gifApi: GifApi, query: string): UseGifs {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Fetch function using the current `query` and `page`
+  // Used for pagination (infinite scroll) — fetches the next page
   const fetchAndSetGifs = useCallback(async () => {
-    if (query.length == 0) {
-      if (state.gifs.size > 0) {
-        dispatch({ type: "RESET" });
-      }
-      return;
-    }
+    if (query.length === 0) return;
 
     try {
-      if (
-        query.endsWith(".gif") ||
-        query.endsWith(".webp") ||
-        query.endsWith(".apng")
-      ) {
-        dispatch({
-          type: "FETCH_SUCCESS",
-          payload: {
-            gifs: [{ name: gifApi.urlToTitle(query), url: query, tags: [] }],
-            page: 1,
-            hasMore: false,
-          },
-        });
-        return;
-      }
-
       const gifsResponse = await gifApi.search(query, state.page, 20);
 
       dispatch({
@@ -91,12 +74,60 @@ export default function useGifs(gifApi: GifApi, query: string): UseGifs {
       console.error(error);
       dispatch({ type: "FETCH_ERROR" });
     }
-  }, [state, query]);
+  }, [state.page, query]);
 
+  // When the query changes, reset results and fetch page 1 fresh
   useEffect(() => {
-    state.page = 1;
-    fetchAndSetGifs();
+    dispatch({ type: "RESET" });
+
+    if (query.length === 0) return;
+
+    let cancelled = false;
+
+    const fetchFirstPage = async () => {
+      try {
+        if (
+          query.endsWith(".gif") ||
+          query.endsWith(".webp") ||
+          query.endsWith(".apng")
+        ) {
+          if (!cancelled) {
+            dispatch({
+              type: "FETCH_SUCCESS",
+              payload: {
+                gifs: [{ name: gifApi.urlToTitle(query), url: query, tags: [] }],
+                page: 1,
+                hasMore: false,
+              },
+            });
+          }
+          return;
+        }
+
+        const gifsResponse = await gifApi.search(query, 1, 20);
+        if (!cancelled) {
+          dispatch({
+            type: "FETCH_SUCCESS",
+            payload: {
+              gifs: gifsResponse.results,
+              page: 1,
+              hasMore: gifsResponse.hasMore,
+            },
+          });
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.error(error);
+          dispatch({ type: "FETCH_ERROR" });
+        }
+      }
+    };
+
+    fetchFirstPage();
+    return () => {
+      cancelled = true;
+    };
   }, [query]);
 
-  return [Array.from(state.gifs), fetchAndSetGifs, state.hasMoreGifs];
+  return [Array.from(state.gifs), fetchAndSetGifs, state.hasMoreGifs, state.isError];
 }

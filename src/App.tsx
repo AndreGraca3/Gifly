@@ -8,6 +8,7 @@ import "react-tooltip/dist/react-tooltip.css";
 import { useDebounce } from "use-debounce";
 import { createRoot } from "react-dom/client";
 import KlipyApi from "./api/KlipyApi";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const gifApi = new KlipyApi((window as any).env.KLIPY_API_KEY);
 
@@ -16,10 +17,10 @@ export default function App() {
   const [queryValue] = useDebounce(query, 900);
 
   return (
-    <>
-      <Header onSearch={setQuery} />
+    <ThemeProvider>
+      <Header query={query} onQueryChange={setQuery} />
 
-      <section className="mt-20 p-4 overflow-visible">
+      <section className="mt-20 p-4 overflow-visible w-full">
         <GifSection query={queryValue} gifApi={gifApi} />
       </section>
 
@@ -34,7 +35,7 @@ export default function App() {
       />
 
       <Tooltip id="my-tooltip" className="z-50" />
-    </>
+    </ThemeProvider>
   );
 }
 

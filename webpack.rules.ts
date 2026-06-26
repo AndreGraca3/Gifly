@@ -30,10 +30,23 @@ export const rules: Required<ModuleOptions>['rules'] = [
   },
   {
     test: /\.css$/,
+    exclude: /node_modules/,
     use: [
       { loader: "style-loader" },
       { loader: "css-loader" },
       { loader: "postcss-loader" }
     ],
+  },
+  {
+    test: /\.css$/,
+    include: /node_modules/,
+    use: [
+      { loader: "style-loader" },
+      { loader: "css-loader" }
+    ],
+  },
+  {
+    test: /\.(woff|woff2|eot|ttf|otf)$/i,
+    type: 'asset/resource',
   },
 ];

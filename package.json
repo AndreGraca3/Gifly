@@ -9,7 +9,8 @@
     "package-linux": "electron-forge package --platform=linux",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "lint": "eslint --ext .ts,.tsx .",
+    "test": "jest"
   },
   "keywords": [],
   "author": {
@@ -24,7 +25,11 @@
     "@electron-forge/maker-squirrel": "^6.2.1",
     "@electron-forge/maker-zip": "^6.2.1",
     "@electron-forge/plugin-webpack": "^6.2.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/dotenv-webpack": "^7.0.8",
+    "@types/jest": "^30.0.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
@@ -35,14 +40,18 @@
     "eslint": "^8.45.0",
     "eslint-plugin-import": "^2.27.5",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
     "node-loader": "^2.0.0",
     "postcss-loader": "^7.3.3",
     "style-loader": "^3.3.3",
+    "ts-jest": "^29.4.11",
     "ts-loader": "^9.4.4",
     "ts-node": "^10.9.1",
     "typescript": "~5.1.6"
   },
   "dependencies": {
+    "@fontsource-variable/nunito": "^5.2.7",
     "autoprefixer": "^10.4.14",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",

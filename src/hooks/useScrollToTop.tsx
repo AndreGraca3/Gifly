@@ -1,14 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+const SCROLL_THRESHOLD = 200;
 
 export default function useScrollToTop() {
+  const [showButton, setShowButton] = useState(false);
+
   const scrollToTop = () => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const onScroll = () => {
+      setShowButton(window.scrollY > SCROLL_THRESHOLD);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const onKeyUp = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     };
 
@@ -18,5 +33,5 @@ export default function useScrollToTop() {
     };
   }, []);
 
-  return [scrollToTop];
+  return [scrollToTop, showButton] as const;
 }
