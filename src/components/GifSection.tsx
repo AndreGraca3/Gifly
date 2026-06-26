@@ -141,10 +141,10 @@ export default function GifSection({
       {showScrollButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 bg-black/20 dark:bg-white/10 hover:bg-black/30 dark:hover:bg-white/20 backdrop-blur-sm text-gray-800 dark:text-white rounded-full p-3 shadow-lg transition-all hover:scale-110 cursor-pointer"
+          className="fixed bottom-6 right-6 z-50 bg-black/25 dark:bg-white/15 hover:bg-black/35 dark:hover:bg-white/25 backdrop-blur-sm text-gray-800 dark:text-white rounded-full p-3.5 shadow-xl border border-black/15 dark:border-white/20 transition-all hover:scale-110 cursor-pointer"
           aria-label="Scroll to top"
         >
-          <FaArrowUp className="text-lg" />
+          <FaArrowUp className="text-xl" />
         </button>
       )}
 

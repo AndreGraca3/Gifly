@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Category } from "../domain/Category";
-import { FaPlus, FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaPlus, FaTimes, FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 
 const SCROLL_AMOUNT = 160;
 
@@ -56,6 +56,12 @@ export default function UserCategoryTabs({
     });
   };
 
+  const scrollToEdge = (dir: "start" | "end") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTo({ left: dir === "start" ? 0 : el.scrollWidth, behavior: "smooth" });
+  };
+
   const handleCreate = () => {
     if (newName.trim()) onCreate(newName.trim());
     setNewName("");
@@ -86,6 +92,11 @@ export default function UserCategoryTabs({
 
   return (
     <div className="flex items-center gap-1.5 w-full">
+      {canScrollLeft && (
+        <button onClick={() => scrollToEdge("start")} className={arrowBtn} aria-label="Scroll to start">
+          <FaAngleDoubleLeft className="text-xs" />
+        </button>
+      )}
       {canScrollLeft && (
         <button onClick={() => scrollBy("left")} className={arrowBtn} aria-label="Scroll left">
           <FaChevronLeft className="text-xs" />
@@ -158,6 +169,11 @@ export default function UserCategoryTabs({
       {canScrollRight && (
         <button onClick={() => scrollBy("right")} className={arrowBtn} aria-label="Scroll right">
           <FaChevronRight className="text-xs" />
+        </button>
+      )}
+      {canScrollRight && (
+        <button onClick={() => scrollToEdge("end")} className={arrowBtn} aria-label="Scroll to end">
+          <FaAngleDoubleRight className="text-xs" />
         </button>
       )}
     </div>
