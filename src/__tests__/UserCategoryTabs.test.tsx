@@ -207,7 +207,7 @@ describe("UserCategoryTabs", () => {
       expect(onCreate).not.toHaveBeenCalled();
     });
 
-    it("calls onDelete when the × button on a category is clicked", () => {
+    it("shows confirmation modal when the × button on a category is clicked", () => {
       const onDelete = jest.fn();
       const cats = makeCategories(1);
       render(
@@ -220,7 +220,43 @@ describe("UserCategoryTabs", () => {
         />
       );
       fireEvent.click(screen.getByLabelText("Delete Category 1"));
+      expect(screen.getByText("Delete collection")).toBeInTheDocument();
+      expect(onDelete).not.toHaveBeenCalled();
+    });
+
+    it("calls onDelete after confirming in the modal", () => {
+      const onDelete = jest.fn();
+      const cats = makeCategories(1);
+      render(
+        <UserCategoryTabs
+          categories={cats}
+          activeId={null}
+          onSelect={noop}
+          onCreate={noop}
+          onDelete={onDelete}
+        />
+      );
+      fireEvent.click(screen.getByLabelText("Delete Category 1"));
+      fireEvent.click(screen.getByRole("button", { name: "Delete" }));
       expect(onDelete).toHaveBeenCalledWith("cat-0");
+    });
+
+    it("cancels deletion when Cancel is clicked in the modal", () => {
+      const onDelete = jest.fn();
+      const cats = makeCategories(1);
+      render(
+        <UserCategoryTabs
+          categories={cats}
+          activeId={null}
+          onSelect={noop}
+          onCreate={noop}
+          onDelete={onDelete}
+        />
+      );
+      fireEvent.click(screen.getByLabelText("Delete Category 1"));
+      fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+      expect(onDelete).not.toHaveBeenCalled();
+      expect(screen.queryByText("Delete collection")).not.toBeInTheDocument();
     });
 
     it("Escape key cancels creation without calling onCreate", () => {

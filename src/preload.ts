@@ -5,6 +5,12 @@ contextBridge.exposeInMainWorld("api", {
     await ipcRenderer.invoke("copy-image-to-clipboard"),
 
   safeFetch: async (url: string) => await ipcRenderer.invoke("safe-fetch", url),
+
+  getAppVersion: async (): Promise<string> =>
+    await ipcRenderer.invoke("get-app-version"),
+
+  getRequiredVersion: async (): Promise<string> =>
+    await ipcRenderer.invoke("get-required-version"),
 });
 
 contextBridge.exposeInMainWorld("env", {

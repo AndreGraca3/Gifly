@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Category } from "../domain/Category";
-import { FaPlus, FaTimes, FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
+import { FaPlus, FaTimes, FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight, FaTrash } from "react-icons/fa";
 
 const SCROLL_AMOUNT = 160;
 
@@ -19,6 +19,7 @@ export default function UserCategoryTabs({
 }) {
   const [isCreating, setIsCreating] = useState(false);
   const [newName, setNewName] = useState("");
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
@@ -128,7 +129,7 @@ export default function UserCategoryTabs({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDelete(cat.id);
+                  setPendingDeleteId(cat.id);
                 }}
                 className="ml-0.5 opacity-0 group-hover:opacity-100 hover:text-red-500 dark:hover:text-red-400 transition-all cursor-pointer"
                 aria-label={`Delete ${cat.name}`}
@@ -176,6 +177,54 @@ export default function UserCategoryTabs({
           <FaAngleDoubleRight className="text-xs" />
         </button>
       )}
+
+      {pendingDeleteId && (() => {
+        const cat = categories.find((c) => c.id === pendingDeleteId)!;
+        return (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+            onClick={() => setPendingDeleteId(null)}
+          >
+            <div
+              className="bg-white dark:bg-[#36393f] rounded-2xl p-6 shadow-2xl w-72 transition-colors duration-300"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-red-500 text-xl">
+                  <FaTrash />
+                </span>
+                <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+                  Delete collection
+                </h3>
+              </div>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
+                Are you sure you want to delete{" "}
+                <span className="font-semibold text-gray-800 dark:text-gray-100">
+                  {cat.name}
+                </span>
+                ? This cannot be undone.
+              </p>
+              <div className="flex gap-2 justify-end">
+                <button
+                  onClick={() => setPendingDeleteId(null)}
+                  className="px-4 py-2 rounded-xl text-sm bg-black/5 dark:bg-white/10 text-gray-700 dark:text-gray-200 hover:bg-black/10 dark:hover:bg-white/20 transition-all cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    onDelete(pendingDeleteId);
+                    setPendingDeleteId(null);
+                  }}
+                  className="px-4 py-2 rounded-xl text-sm bg-red-500 hover:bg-red-600 text-white font-semibold transition-all cursor-pointer"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

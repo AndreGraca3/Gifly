@@ -28,6 +28,33 @@ ipcMain.handle("safe-fetch", async (e, url) => {
   return safeFetch(url, net.fetch.bind(net));
 });
 
+ipcMain.handle("get-app-version", () => app.getVersion());
+
+ipcMain.handle("get-required-version", async () => {
+  const token = process.env.DOPPLER_TOKEN;
+  if (!token) throw new Error("DOPPLER_TOKEN is not set");
+
+  const response = await net.fetch(
+    "https://api.doppler.com/v3/configs/config/secret?project=gifly&config=prd&name=APP_VERSION",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Doppler API error: ${response.status}`);
+  }
+
+  const data = (await response.json()) as {
+    name: string;
+    value: { raw: string; computed: string; note: string };
+  };
+  return data.value.computed;
+});
+
 ipcMain.handle("copy-image-to-clipboard", async () => {
   try {
     const win = BrowserWindow.getFocusedWindow();
@@ -74,15 +101,19 @@ const createWindow = (): void => {
     },
   });
 
-  screen.on("display-metrics-changed", (event, display, changedMetrics) => {
-    const { x, y, width, height } = display.workArea;
+  const repositionWindow = () => {
+    const { x, y, width, height } = screen.getPrimaryDisplay().workArea;
     mainWindow.setBounds({
-      x: width - windowWidth,
-      y: height - windowHeight,
+      x: x + width - windowWidth,
+      y: y + height - windowHeight,
       width: windowWidth,
       height: windowHeight,
     });
-  });
+  };
+
+  screen.on("display-metrics-changed", repositionWindow);
+  screen.on("display-added", repositionWindow);
+  screen.on("display-removed", repositionWindow);
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
