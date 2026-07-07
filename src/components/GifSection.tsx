@@ -28,6 +28,7 @@ export default function GifSection({
     categories,
     createCategory,
     deleteCategory,
+    reorderCategories,
     getGifCategoryIds,
     getGifCategoryColors,
     toggleGifCategory,
@@ -100,6 +101,7 @@ export default function GifSection({
               onSelect={setActiveCategoryId}
               onCreate={createCategory}
               onDelete={deleteCategory}
+              onReorder={reorderCategories}
             />
           )}
         </>

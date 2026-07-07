@@ -10,18 +10,22 @@ export default function UserCategoryTabs({
   onSelect,
   onCreate,
   onDelete,
+  onReorder,
 }: {
   categories: Category[];
   activeId: string | null;
   onSelect: (id: string | null) => void;
   onCreate: (name: string) => void;
   onDelete: (id: string) => void;
+  onReorder: (fromId: string, toId: string) => void;
 }) {
   const [isCreating, setIsCreating] = useState(false);
   const [newName, setNewName] = useState("");
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -116,9 +120,21 @@ export default function UserCategoryTabs({
           {categories.map((cat) => (
             <div
               key={cat.id}
+              draggable
+              onDragStart={() => setDraggingId(cat.id)}
+              onDragEnd={() => { setDraggingId(null); setDragOverId(null); }}
+              onDragOver={(e) => { e.preventDefault(); setDragOverId(cat.id); }}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (draggingId && draggingId !== cat.id) onReorder(draggingId, cat.id);
+                setDraggingId(null);
+                setDragOverId(null);
+              }}
               onClick={() => onSelect(activeId === cat.id ? null : cat.id)}
               className={`group flex items-center gap-1.5 ${tabBase} ${
                 activeId === cat.id ? tabActive : tabInactive
+              } ${draggingId === cat.id ? "opacity-40" : ""} ${
+                dragOverId === cat.id && draggingId !== cat.id ? "ring-2 ring-yellow-400" : ""
               }`}
             >
               <span

@@ -13,6 +13,7 @@ export type UseCategories = {
   categories: Category[];
   createCategory: (name: string) => string;
   deleteCategory: (id: string) => void;
+  reorderCategories: (fromId: string, toId: string) => void;
   getGifCategoryIds: (gifUrl: string) => string[];
   getGifCategoryColors: (gifUrl: string) => string[];
   toggleGifCategory: (gifUrl: string, categoryId: string) => void;
@@ -64,6 +65,18 @@ export default function useCategories(): UseCategories {
     });
   }, []);
 
+  const reorderCategories = useCallback((fromId: string, toId: string) => {
+    setCategories((prev) => {
+      const fromIndex = prev.findIndex((c) => c.id === fromId);
+      const toIndex = prev.findIndex((c) => c.id === toId);
+      if (fromIndex === -1 || toIndex === -1 || fromIndex === toIndex) return prev;
+      const next = [...prev];
+      const [moved] = next.splice(fromIndex, 1);
+      next.splice(toIndex, 0, moved);
+      return next;
+    });
+  }, []);
+
   const getGifCategoryIds = useCallback(
     (gifUrl: string): string[] => gifCategoryMap[gifUrl] ?? [],
     [gifCategoryMap]
@@ -109,6 +122,7 @@ export default function useCategories(): UseCategories {
     categories,
     createCategory,
     deleteCategory,
+    reorderCategories,
     getGifCategoryIds,
     getGifCategoryColors,
     toggleGifCategory,

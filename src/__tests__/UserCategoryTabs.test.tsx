@@ -33,6 +33,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={noop}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       expect(screen.getByText("New collection")).toBeInTheDocument();
@@ -46,6 +47,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={noop}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       fireEvent.click(screen.getByText("New collection"));
@@ -64,6 +66,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={noop}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       // outer wrapper is the flex row containing arrow buttons + scroll div
@@ -80,6 +83,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={noop}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       const outerWrapper = container.firstChild as HTMLElement;
@@ -96,6 +100,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={noop}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       const outerWrapper = container.firstChild as HTMLElement;
@@ -115,6 +120,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={noop}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       expect(screen.getByText("All")).toBeInTheDocument();
@@ -133,6 +139,7 @@ describe("UserCategoryTabs", () => {
           onSelect={onSelect}
           onCreate={noop}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       fireEvent.click(screen.getByText("Category 1"));
@@ -149,6 +156,7 @@ describe("UserCategoryTabs", () => {
           onSelect={onSelect}
           onCreate={noop}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       fireEvent.click(screen.getByText("Category 1"));
@@ -164,6 +172,7 @@ describe("UserCategoryTabs", () => {
           onSelect={onSelect}
           onCreate={noop}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       fireEvent.click(screen.getByText("All"));
@@ -179,6 +188,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={onCreate}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       // open the inline input
@@ -198,6 +208,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={onCreate}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       fireEvent.click(screen.getByLabelText("New collection"));
@@ -217,6 +228,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={noop}
           onDelete={onDelete}
+          onReorder={noop}
         />
       );
       fireEvent.click(screen.getByLabelText("Delete Category 1"));
@@ -234,6 +246,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={noop}
           onDelete={onDelete}
+          onReorder={noop}
         />
       );
       fireEvent.click(screen.getByLabelText("Delete Category 1"));
@@ -251,6 +264,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={noop}
           onDelete={onDelete}
+          onReorder={noop}
         />
       );
       fireEvent.click(screen.getByLabelText("Delete Category 1"));
@@ -268,6 +282,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={onCreate}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       fireEvent.click(screen.getByLabelText("New collection"));
@@ -289,6 +304,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={noop}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       const activeTab = screen.getByText("Category 1").closest("div");
@@ -303,6 +319,7 @@ describe("UserCategoryTabs", () => {
           onSelect={noop}
           onCreate={noop}
           onDelete={noop}
+          onReorder={noop}
         />
       );
       expect(screen.getByText("All")).toHaveClass("bg-yellow-400");
